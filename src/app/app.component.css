@@ -1,0 +1,61 @@
+/* Container setup */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #002147;
+}
+
+/* Sidebar placeholder styling */
+app-sidebar {
+  width: 250px;
+  background-color: #002147;
+  color: white;
+  padding: 1rem;
+  box-sizing: border-box;
+  font-weight: 600;
+}
+
+/* Main content area */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+/* Header - centered logo and text */
+.app-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #333333; /* dark gray */
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
+  color: white;
+  gap: 0.5rem;
+}
+
+/* Logo */
+.app-header .logo {
+  height: 60px;
+  width: auto;
+}
+
+/* Title */
+.app-header h1 {
+  font-size: 2rem;
+  margin: 0;
+  font-weight: 700;
+  user-select: none;
+}
+
+/* Page content */
+.page-content {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: #f0f4f8;
+  overflow-y: auto;
+}
