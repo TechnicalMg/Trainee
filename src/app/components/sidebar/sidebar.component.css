@@ -49,16 +49,23 @@
   color: #002147;
 }
 
-.logout a {
-  background-color: #ff7f2a;
-  color: #002147;
-  padding: 20px;
-  border-radius: 6px;
-  text-align: center;
-  font-weight: bold;
-  transition: background-color 0.3s;
+.logout {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
 }
 
-.logout a:hover {
-  background-color: #e56a1e;
+.logout button {
+  background-color: #dc3545; /* Bootstrap red */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout button:hover {
+  background-color: #c82333; /* Darker red on hover */
 }
