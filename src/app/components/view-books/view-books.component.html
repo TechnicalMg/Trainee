@@ -11,6 +11,7 @@
   <table>
     <thead>
       <tr>
+        <th>ID</th>
         <th>Title</th>
         <th>Author</th>
         <th>Genre</th>
@@ -20,13 +21,14 @@
     </thead>
     <tbody>
       <tr *ngFor="let book of filteredBooks(); let i = index">
+        <td>{{ book.id }}</td>
         <td>{{ book.title }}</td>
         <td>{{ book.author }}</td>
         <td>{{ book.genre }}</td>
         <td>{{ book.year }}</td>
         <td>
-          <button class="edit-btn" (click)="onEdit(i)">Edit</button>
-          <button class="delete-btn" (click)="onDelete(i)">Delete</button>
+          <button class="edit-btn" (click)="onEdit(book)">Edit</button>
+          <button class="delete-btn" (click)="onDelete(book)">Delete</button>
           <button class="export-btn" (click)="onExport(book)">Export</button>
         </td>
       </tr>
@@ -35,7 +37,7 @@
 </div>
 
 <app-edit-book
-  *ngIf="selectedBook"
-  [book]="selectedBook"
-  (close)="selectedBook = null; loadBooks()">
+  *ngIf="selectedBookId"
+  [bookId]="selectedBookId"
+  (close)="onEditClose()">
 </app-edit-book>

@@ -2,51 +2,40 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface Book {
-  id?: number;
-  title: string;
-  author: string;
-  genre: string;
-  year: number;
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
-  
   private apiUrl = 'http://localhost:8080/api/books';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // Add a new book
-  addBook(book: Book): Observable<Book> {
-    return this.http.post<Book>(this.apiUrl, book);
+  // POST: Add a new book with PDF
+  addBook(formData: FormData): Observable<any> {
+    return this.http.post(this.apiUrl, formData);
   }
 
-  // Get all books
-  getBooks(): Observable<Book[]> {
-    return this.http.get<Book[]>(this.apiUrl);
+  // GET: Fetch all books
+  getBooks(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
   }
 
-  // Get all books (alias for compatibility with view-books component)
-  getAllBooks(): Observable<Book[]> {
-    return this.getBooks();
-  }
-
-  // Get a single book by ID
-  getBookById(id: number): Observable<Book> {
-    return this.http.get<Book>(`${this.apiUrl}/${id}`);
-  }
-
-  // Update an existing book
-updateBook(id: number, bookData: any): Observable<any> {
-  return this.http.put(`${this.apiUrl}/${id}`, bookData);
+  getBookById(id: number): Observable<any> {
+  return this.http.get(`${this.apiUrl}/${id}`);
 }
 
-  // Delete a book by ID
-  deleteBook(id: number): Observable<any> {
-  return this.http.delete(`${this.apiUrl}/${id}`);
-}
+  // PUT: Update book
+  updateBook(id: number, updatedBook: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, updatedBook);
+  }
 
+  // DELETE: Delete book
+  deleteBook(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  // GET: Download PDF
+  downloadPdf(id: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${id}`, { responseType: 'blob' });
+  }
 }

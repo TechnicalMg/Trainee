@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
-// Import your backend service (adjust the path as needed)
 import { BookService } from '../../services/book.service';
-import { EditBookComponent } from "../edit-book/edit-book.component";
+import { EditBookComponent } from '../edit-book/edit-book.component';
 
 @Component({
   selector: 'app-view-books',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, EditBookComponent],
   templateUrl: './view-books.component.html',
   styleUrl: './view-books.component.css'
@@ -18,23 +19,22 @@ export class ViewBooksComponent implements OnInit {
   books: any[] = [];
   loading: boolean = false;
   error: string = '';
-  selectedBook: any = null;
+  selectedBookId: number | null = null;
 
   constructor(
     private bookService: BookService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
     this.loadBooks();
   }
 
-  // Load books from database
   loadBooks(): void {
     this.loading = true;
     this.error = '';
-    
-    // Replace this with your actual service call
+
     this.bookService.getBooks().subscribe({
       next: (data) => {
         this.books = data;
@@ -48,12 +48,9 @@ export class ViewBooksComponent implements OnInit {
     });
   }
 
-  // Filter books based on search text
   filteredBooks() {
-    if (!this.searchText.trim()) {
-      return this.books;
-    }
-    
+    if (!this.searchText.trim()) return this.books;
+
     const text = this.searchText.toLowerCase();
     return this.books.filter(book =>
       book.title.toLowerCase().includes(text) ||
@@ -63,25 +60,29 @@ export class ViewBooksComponent implements OnInit {
     );
   }
 
-  // Navigate to edit page or open edit modal
-// selectedBook: any = null;
+  onEdit(book: any): void {
+    this.selectedBookId = book.id;
+  }
 
-onEdit(book: any): void {
-  this.selectedBook = { ...book }; // Pass data to edit component
-}
+  onEditClose(): void {
+    this.selectedBookId = null; // ✅ fix here
+    this.loadBooks();
+  }
 
-onEditClose(): void {
-  this.selectedBook = null;
-  this.loadBooks(); // Refresh after edit
-}
+onDelete(book: any): void {
+  console.log('Deleting book with ID:', book.id);  // <- Add this
 
+  const firstConfirm = confirm(`Are you sure you want to delete "${book.title}"?`);
+  if (firstConfirm) {
+    const secondConfirm = confirm(`This action is permanent. Do you really want to delete "${book.title}" from the library?`);
 
-  // Delete book from database
-  onDelete(book: any): void {
-    const confirmed = confirm(`Are you sure you want to delete "${book.title}"?`);
-    if (confirmed) {
+    if (secondConfirm) {
+      if (!book.id) {
+        alert("Invalid book ID. Cannot delete.");
+        return;
+      }
+
       this.loading = true;
-      
       this.bookService.deleteBook(book.id).subscribe({
         next: () => {
           this.books = this.books.filter(b => b.id !== book.id);
@@ -96,25 +97,27 @@ onEditClose(): void {
       });
     }
   }
+}
 
-  // Export book information to text file
+
+
   onExport(book: any): void {
-    const content = `Title: ${book.title}
-Author: ${book.author}
-Genre: ${book.genre}
-Year of Publish: ${book.year}
-Book ID: ${book.id}`;
-
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = `${book.title.replace(/\s+/g, '_')}_info.txt`;
-    anchor.click();
-    window.URL.revokeObjectURL(url);
+    const url = `http://localhost:8080/api/books/pdf/${book.id}`;
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (response: Blob) => {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = book.pdfName || `${book.title}_book.pdf`;
+        link.click();
+      },
+      error: (error) => {
+        alert('Failed to download PDF');
+        console.error('Error downloading PDF:', error);
+      }
+    });
   }
 
-  // Refresh the book list
   onRefresh(): void {
     this.loadBooks();
   }

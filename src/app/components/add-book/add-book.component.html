@@ -1,30 +1,38 @@
-
 <div class="add-book-container">
-  <h2>Add a New Book</h2>
+  <h2>Add New Book</h2>
+  <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" class="add-book-form" enctype="multipart/form-data">
 
-  <form [formGroup]="bookForm" (ngSubmit)="onSubmit()" class="add-book-form">
-    <label>Title</label>
-    <input type="text" formControlName="title" required />
+    <label>Title:</label>
+    <input formControlName="title" type="text" required />
+    <div *ngIf="bookForm.get('title')?.invalid && bookForm.get('title')?.touched" class="error">
+      Title is required
+    </div>
 
-    <label>Author</label>
-    <input type="text" formControlName="author" required />
+    <label>Author:</label>
+    <input formControlName="author" type="text" required />
+    <div *ngIf="bookForm.get('author')?.invalid && bookForm.get('author')?.touched" class="error">
+      Author is required
+    </div>
 
-    <label>Genre</label>
-    <input type="text" formControlName="genre" required />
+    <label>Genre:</label>
+    <input formControlName="genre" type="text" required />
+    <div *ngIf="bookForm.get('genre')?.invalid && bookForm.get('genre')?.touched" class="error">
+      Genre is required
+    </div>
 
+    <label>Year:</label>
+    <input formControlName="year" type="number" required />
+    <div *ngIf="bookForm.get('year')?.invalid && bookForm.get('year')?.touched" class="error">
+      Enter a valid year
+    </div>
 
-    <label>Year of Publish</label>
-    <input type="number" formControlName="year" min="1900" max="2100" required />
+    <label>Attach PDF:</label>
+    <input type="file" (change)="onFileChange($event)" accept="application/pdf" required />
+    <div *ngIf="pdfError" class="error">{{ pdfError }}</div>
 
-    <button type="submit" class="add-button">
+    <button class="add-button" type="submit" [disabled]="bookForm.invalid || !selectedPdfFile">
       <span class="button__text">Add Book</span>
-      <span class="button__icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2"
-          stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none">
-          <line y2="19" y1="5" x2="12" x1="12"></line>
-          <line y2="12" y1="12" x2="19" x1="5"></line>
-        </svg>
-      </span>
+      <span class="button__icon">➕</span>
     </button>
   </form>
 </div>

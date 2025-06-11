@@ -1,37 +1,53 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BookService } from '../../services/book.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-edit-book',
-  standalone: true,
   imports: [CommonModule,ReactiveFormsModule],
   templateUrl: './edit-book.component.html',
   styleUrls: ['./edit-book.component.css']
 })
-export class EditBookComponent implements OnChanges {
-  @Input() book: any;
+export class EditBookComponent implements OnInit {
+  @Input() bookId!: number;
   @Output() close = new EventEmitter<void>();
-
   editBookForm!: FormGroup;
 
   constructor(private fb: FormBuilder, private bookService: BookService) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['book'] && this.book) {
-      this.editBookForm = this.fb.group({
-        title: [this.book.title, Validators.required],
-        author: [this.book.author, Validators.required],
-        genre: [this.book.genre, Validators.required],
-        year: [this.book.year, [Validators.required, Validators.min(1900), Validators.max(2100)]]
-      });
-    }
+  ngOnInit(): void {
+    this.editBookForm = this.fb.group({
+      title: ['', Validators.required],
+      author: ['', Validators.required],
+      genre: ['', Validators.required],
+      year: [null, [Validators.required, Validators.min(0)]]
+    });
+
+    this.loadBook();
+  }
+
+  loadBook(): void {
+    this.bookService.getBookById(this.bookId).subscribe({
+      next: (book) => {
+        this.editBookForm.patchValue({
+          title: book.title,
+          author: book.author,
+          genre: book.genre,
+          year: book.year
+        });
+      },
+      error: (err) => {
+        alert('Failed to load book for editing.');
+        console.error(err);
+      }
+    });
   }
 
   onUpdate(): void {
-    if (this.editBookForm.valid && this.book?.id) {
-      this.bookService.updateBook(this.book.id, this.editBookForm.value).subscribe({
+    if (this.editBookForm.valid) {
+      const updatedBook = this.editBookForm.value;
+      this.bookService.updateBook(this.bookId, updatedBook).subscribe({
         next: () => {
           alert('Book updated successfully!');
           this.close.emit();
@@ -41,8 +57,6 @@ export class EditBookComponent implements OnChanges {
           console.error(err);
         }
       });
-    } else {
-      alert('Please fill the form correctly.');
     }
   }
 
