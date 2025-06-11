@@ -1,0 +1,28 @@
+<div class="add-book-container">
+  <h2>Edit Book</h2>
+  <form [formGroup]="editBookForm" (ngSubmit)="onUpdate()" class="add-book-form">
+    <label>Title</label>
+    <input formControlName="title" type="text" />
+
+    <label>Author</label>
+    <input formControlName="author" type="text" />
+
+    <label>Genre</label>
+    <input formControlName="genre" type="text" />
+
+    <label>Year</label>
+    <input formControlName="year" type="number" />
+
+    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+      <button type="submit" class="add-button">
+        <span class="button__text">Update</span>
+        <span class="button__icon">✏️</span>
+      </button>
+
+      <button type="button" class="add-button cancel-button" (click)="onCancel()">
+        <span class="button__text">Cancel</span>
+        <span class="button__icon">❌</span>
+      </button>
+    </div>
+  </form>
+</div>

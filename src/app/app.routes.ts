@@ -1,14 +1,13 @@
-// src/app/app.routes.ts
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { BookFormComponent } from './components/book-form/book-form.component';
-import { ImportExportComponent } from './components/import-export/import-export.component';
+import { AddBookComponent } from './components/add-book/add-book.component';
+import { ImportBooksComponent } from './components/import-books/import-books.component';
+import { ViewBooksComponent } from './components/view-books/view-books.component'; // if needed
+import { EditBookComponent } from './components/edit-book/edit-book.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'add-book', component: BookFormComponent },
-  { path: 'edit-book/:id', component: BookFormComponent },
-  { path: 'import-export', component: ImportExportComponent },
-  { path: '**', redirectTo: '/dashboard' }
-]
+  { path: 'add-book', component: AddBookComponent },
+  { path: 'import-books', component: ImportBooksComponent },
+  { path: 'view-books', component: ViewBooksComponent }, // optional
+  { path: 'edit-book', component: EditBookComponent },
+  { path: '', redirectTo: '/add-book', pathMatch: 'full' }
+];

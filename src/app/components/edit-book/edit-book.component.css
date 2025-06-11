@@ -1,0 +1,123 @@
+.add-book-container {
+  width: 600px;
+  margin: 2rem auto;
+  padding: 2rem 2.5rem;
+  background-color: #003366; /* Deep Blue */
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.add-book-container h2 {
+  text-align: center;
+  color: #FFA500; /* Orange */
+  margin-bottom: 1.5rem;
+}
+
+.add-book-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-book-form label {
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #FFA500;
+}
+
+.add-book-form input {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #000;
+  transition: box-shadow 0.3s;
+}
+
+.add-book-form input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #FFA500;
+}
+
+/* Buttons Container */
+.add-book-form .button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Shared Button Styles */
+.add-button {
+  height: 44px;
+  width: 180px;
+  border: none;
+  background-color: #FFA500;
+  color: #003366;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+
+.button__text {
+  flex: 1;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.button__icon {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 44px;
+  background-color: #e69500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+.add-button:hover {
+  background-color: #e69500;
+  color: #fff;
+}
+
+.add-button:hover .button__text {
+  color: transparent;
+}
+
+.add-button:hover .button__icon {
+  width: 100%;
+  right: 0;
+}
+
+.add-button:active {
+  background-color: #cc8400;
+}
+
+/* Cancel Button Overrides */
+.cancel-button {
+  background-color: #999;
+  color: #fff;
+}
+
+.cancel-button .button__icon {
+  background-color: #888;
+}
+
+.cancel-button:hover {
+  background-color: #777;
+  color: white;
+}
+
+.cancel-button:hover .button__icon {
+  background-color: #666;
+}

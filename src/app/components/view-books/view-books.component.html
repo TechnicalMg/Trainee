@@ -1,1 +1,41 @@
-<p>view-books works!</p>
+<div class="view-books-container">
+  <h2>View Books</h2>
+
+  <input
+    type="text"
+    placeholder="Search by title, author, genre, or year..."
+    [(ngModel)]="searchText"
+    class="search-input"
+  />
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Genre</th>
+        <th>Year of Publish</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of filteredBooks(); let i = index">
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.genre }}</td>
+        <td>{{ book.year }}</td>
+        <td>
+          <button class="edit-btn" (click)="onEdit(i)">Edit</button>
+          <button class="delete-btn" (click)="onDelete(i)">Delete</button>
+          <button class="export-btn" (click)="onExport(book)">Export</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-edit-book
+  *ngIf="selectedBook"
+  [book]="selectedBook"
+  (close)="selectedBook = null; loadBooks()">
+</app-edit-book>
