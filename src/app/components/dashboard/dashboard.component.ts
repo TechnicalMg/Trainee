@@ -58,7 +58,7 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  deleteBook(book: Book): void {
+ deleteBook (book: Book): void {
     if (confirm(`Are you sure you want to delete "${book.title}"?`)) {
       this.bookService.deleteBook(book.bookId!).subscribe({
         next: () => {
@@ -74,9 +74,34 @@ export class DashboardComponent implements OnInit {
       });
     }
   }
+  exportBooks(book: Book): void {
+  this.bookService.downloadBookFile(book.bookId!).subscribe({
+    next: (response) => {
+      const blob = new Blob([response], { type: response.type || 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${book.title}.pdf`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
+    error: (error) => {
+      this.error = 'Failed to download file.';
+      console.error('Error downloading file:', error);
+    }
+  });
+}
+
+
+ 
 
   clearMessages(): void {
     this.error = '';
     this.successMessage = '';
   }
+    // ✅ Add this missing method to fix the NG9 error
+  trackByBookId(index: number, book: Book): string {
+    return book.bookId!;
+  }
+  
 }

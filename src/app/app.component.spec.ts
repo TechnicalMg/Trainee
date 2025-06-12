@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'digital-library' title`, () => {
+  it(`should have the 'book-management-frontend' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('digital-library');
+    expect(app.title).toEqual('book-management-frontend');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, digital-library');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, book-management-frontend');
   });
 });

@@ -1,4 +1,3 @@
-<p>dashboard works!</p>
 <!-- src/app/components/dashboard/dashboard.component.html -->
 <div class="dashboard-container">
   <div class="dashboard-header">
@@ -44,7 +43,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- <tr *ngFor="let book of filteredBooks; trackBy: trackByBookId">
+        <tr *ngFor="let book of filteredBooks; trackBy: trackByBookId">
           <td class="book-title">{{ book.title }}</td>
           <td>{{ book.author }}</td>
           <td>{{ book.year }}</td>
@@ -52,11 +51,14 @@
             <a [routerLink]="['/edit-book', book.bookId]" class="btn btn-edit">
               ✏️ Edit
             </a>
+            <button class="btn btn-secondary" (click)="exportBooks(book)">
+              📥 Export Books
+            </button>
             <button (click)="deleteBook(book)" class="btn btn-delete">
               🗑️ Delete
             </button>
           </td>
-        </tr> -->
+        </tr>
       </tbody>
     </table>
 
